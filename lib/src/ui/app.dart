@@ -37,12 +37,12 @@ class _AppState extends State<App> {
     _controller =VideoPlayerController.network(_videoService.getVideo())
       ..addListener(_listener)
       ..setVolume(0.25)
-
+      ..setLooping(true)
       ..initialize()
       ..play();
     // ADD next video to list que //
     _videoList.add(  VideoPlayerController.network(_videoService.getVideo())
-      ..addListener(_listener)..initialize() ..setLooping(true));
+      ..addListener(_listener)..initialize());
 
   }
 
@@ -51,9 +51,10 @@ class _AppState extends State<App> {
     _controller.removeListener(_listener);
     _controller = _videoList.removeAt(0);
     _controller.play();
+    _controller.setLooping(true);
     _controller.setVolume(0.25);
     _videoList.add(  VideoPlayerController.network(_videoService.getVideo())
-      ..addListener(_listener)..setLooping(true)
+      ..addListener(_listener)
       ..initialize());
     }
 
@@ -64,6 +65,8 @@ class _AppState extends State<App> {
     return Scaffold(
         body:GestureDetector(
           onTap: _nextVideoFunction,
+          onVerticalDragCancel: _nextVideoFunction,
+            onHorizontalDragCancel: _nextVideoFunction,
           child: Stack(
             children: <Widget>[
           Container(
